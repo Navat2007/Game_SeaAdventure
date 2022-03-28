@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class SettingsManager : MonoBehaviour
@@ -20,7 +21,7 @@ public class SettingsManager : MonoBehaviour
         DontDestroyOnLoad (gameObject);
     }
     
-    public void Init()
+    public async Task Init()
     {
         
     }

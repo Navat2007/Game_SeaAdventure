@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 341460880}
   - component: {fileID: 341460879}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1692,7 +1692,7 @@ GameObject:
   - component: {fileID: 696743414}
   - component: {fileID: 696743413}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: Max Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2271,7 +2271,7 @@ GameObject:
   - component: {fileID: 1017525541}
   - component: {fileID: 1017525540}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Restart Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2700,6 +2700,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1196912792}
   - component: {fileID: 1196912791}
+  - component: {fileID: 1196912796}
+  - component: {fileID: 1196912795}
+  - component: {fileID: 1196912794}
+  - component: {fileID: 1196912793}
   m_Layer: 0
   m_Name: GlobalScripts
   m_TagString: Untagged
@@ -2719,13 +2723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1433510f2a5cf8a4fb1eaeffdcf441ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuPanel: {fileID: 692579169}
-  _gamePanel: {fileID: 1624944176}
-  _resultPanel: {fileID: 163329412}
-  _scoreText: {fileID: 1658933024}
-  _hightScoreText: {fileID: 696743413}
-  _startButton: {fileID: 88688773}
-  _restartButton: {fileID: 1017525540}
+  currentState: 1
 --- !u!4 &1196912792
 Transform:
   m_ObjectHideFlags: 0
@@ -2741,6 +2739,64 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1196912793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196912790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a712a80b5947d2b8791be151fb6834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _menuPanel: {fileID: 692579169}
+  _gamePanel: {fileID: 1624944176}
+  _resultPanel: {fileID: 163329412}
+  _scoreText: {fileID: 1204987472}
+  _hightScoreText: {fileID: 696743413}
+  _startButton: {fileID: 0}
+  _restartButton: {fileID: 1017525540}
+--- !u!114 &1196912794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196912790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a61d3311b44bbaaff9cb422b5f2e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coins: 0
+  score: 0
+  maxScore: 0
+--- !u!114 &1196912795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196912790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 094d06b5ce0f92e47829ec964d960641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1196912796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196912790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be418e6f8bb8425d9caf93a78b9f9df4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1204987470
 GameObject:
   m_ObjectHideFlags: 0
@@ -3480,7 +3536,7 @@ GameObject:
   - component: {fileID: 1658933025}
   - component: {fileID: 1658933024}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

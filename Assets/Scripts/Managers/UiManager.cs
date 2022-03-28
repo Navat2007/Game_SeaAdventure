@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,7 @@ namespace Managers
             DontDestroyOnLoad (gameObject);
         }
 
-        public void Init()
+        public async Task Init()
         {
             if(_startButton != null)
                 _startButton.onClick.AddListener(() =>
@@ -41,8 +42,8 @@ namespace Managers
             if(_restartButton != null)
                 _restartButton.onClick.AddListener(() =>
                 {
-                    //OnRestart?.Invoke(null, null);
-                    //Score = 0;
+                    GameManager.instance.OnRestart?.Invoke(null, null);
+                    CurrencyManager.instance.ResetScore();
                     SetPanel(Panels.GAME);
                 });
         }

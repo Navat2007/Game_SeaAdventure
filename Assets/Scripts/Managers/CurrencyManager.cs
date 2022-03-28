@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Managers
@@ -14,6 +15,10 @@ namespace Managers
         [SerializeField] private float score = 0;
         [SerializeField] private float maxScore = 0;
         
+        public int GetCoins => coins;
+        public float GetScore => score;
+        public float GetMaxScore => maxScore;
+        
         void Awake () 
         {
             if (instance == null)
@@ -27,12 +32,13 @@ namespace Managers
  
             DontDestroyOnLoad (gameObject);
         }
+        
+        public async Task Init()
+        {
+            
+        }
 
-        public int GetCoins => coins;
-        public float GetScore => score;
-        public float GetMaxScore => maxScore;
-
-        public void SetScore(float score)
+        public void AddScore(float score)
         {
             this.score += score;
 
@@ -42,6 +48,13 @@ namespace Managers
                 OnMaxScoreChange?.Invoke(this, this.score);
             }
             
+            OnScoreChange?.Invoke(this, this.score);
+        }
+        
+        public void ResetScore()
+        {
+            this.score = 0;
+
             OnScoreChange?.Invoke(this, this.score);
         }
     }
