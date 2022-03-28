@@ -16,12 +16,12 @@ public class Player : MonoBehaviour
         _startingYPosition = transform.position.y;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         GameManager.instance.OnRestart += PositionReset;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameManager.instance.OnRestart -= PositionReset;
     }

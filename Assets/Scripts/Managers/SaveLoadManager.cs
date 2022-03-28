@@ -17,8 +17,6 @@ namespace Managers
             {
                 Destroy (gameObject);
             }
- 
-            DontDestroyOnLoad (gameObject);
         }
         
         public async Task Init()

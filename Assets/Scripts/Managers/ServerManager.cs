@@ -16,8 +16,6 @@ namespace Managers
             {
                 Destroy (gameObject);
             }
- 
-            DontDestroyOnLoad (gameObject);
         }
 
         public void Login()

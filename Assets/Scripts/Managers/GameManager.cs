@@ -7,8 +7,8 @@ namespace Managers
     {
         public static GameManager instance;
 
-        public Action OnRestart;
-        public Action<GameState> OnGameStateChange;
+        public event Action OnRestart;
+        public event Action<GameState> OnGameStateChange;
 
         [SerializeField] private GameState currentState = GameState.PAUSE;
 
@@ -29,16 +29,33 @@ namespace Managers
             await CurrencyManager.instance.Init();
             await UiManager.instance.Init();
         }
+        
+        public void StartLevel()
+        {
+            SetState(GameState.PLAY);
+        }
+        
+        public void PauseLevel()
+        {
+            SetState(GameState.PAUSE);
+        }
+
+        public void RestartLevel()
+        {
+            OnRestart?.Invoke();
+            StartLevel();
+        }
 
         public void FinishLevel()
         {
+            PauseLevel();
             UiManager.instance.ShowLevelResult();
         }
 
         public void SetState(GameState state)
         {
             currentState = state;
-            OnGameStateChange?.Invoke(state);
+            OnGameStateChange?.Invoke(currentState);
         }
     }
 }

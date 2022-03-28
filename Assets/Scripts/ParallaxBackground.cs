@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class ParallaxBackground : MonoBehaviour
@@ -18,8 +19,11 @@ public class ParallaxBackground : MonoBehaviour
 
     private void Update()
     {
-        _newXPosition = Mathf.Repeat(Time.time * -_speed, _offset);
+        if (GameManager.instance.GetState == GameState.PLAY)
+        {
+            _newXPosition = Mathf.Repeat(Time.time * -_speed, _offset);
 
-        transform.position = _startPosition + Vector2.right * _newXPosition;
+            transform.position = _startPosition + Vector2.right * _newXPosition;
+        }
     }
 }

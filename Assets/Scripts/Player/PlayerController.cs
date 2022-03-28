@@ -14,14 +14,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float _moveSpeed;
 
-    private void OnEnable()
+    private void Start()
     {
         GameManager.instance.OnRestart += OnRestart;
+        GameManager.instance.OnGameStateChange += OnStateChange;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameManager.instance.OnRestart -= OnRestart;
+        GameManager.instance.OnGameStateChange -= OnStateChange;
     }
 
     private void FixedUpdate()
@@ -32,9 +34,22 @@ public class PlayerController : MonoBehaviour
                 new Vector2(_fixedJoystick.Horizontal * _moveSpeed, _fixedJoystick.Vertical * _moveSpeed);
         }
     }
-    
+
     private void OnRestart()
     {
-        _fixedJoystick.enabled = false;
+        _fixedJoystick.Reset();
+    }
+
+    private void OnStateChange(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.PLAY:
+                _rigidbody2D.simulated = true;
+                break;
+            case GameState.PAUSE:
+                _rigidbody2D.simulated = false;
+                break;
+        }
     }
 }

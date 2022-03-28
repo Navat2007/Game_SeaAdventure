@@ -13,16 +13,13 @@ public class MovingBlock : MonoBehaviour
 
     private void Start()
     {
+        GameManager.instance.OnRestart += PositionReset;
+        
         _startingXPosition = transform.position.x;
         _startingYPosition = transform.position.y;
     }
     
-    private void OnEnable()
-    {
-        GameManager.instance.OnRestart += PositionReset;
-    }
-
-    private void OnDisable()
+    private void OnDestroy()
     {
         GameManager.instance.OnRestart -= PositionReset;
     }

@@ -9,16 +9,15 @@ namespace Managers
     {
         public static UiManager instance;
         
-        [SerializeField] private Transform _menuPanel;
         [SerializeField] private Transform _gamePanel;
         [SerializeField] private Transform _resultPanel;
         [SerializeField] private TMP_Text _scoreText;
-        [SerializeField] private TMP_Text _hightScoreText;
-        [SerializeField] private Button _startButton;
         [SerializeField] private Button _restartButton;
  
         void Awake () 
         {
+            Debug.Log("GameManager awake");
+            
             if (instance == null)
             {
                 instance = this;
@@ -27,38 +26,27 @@ namespace Managers
             {
                 Destroy (gameObject);
             }
- 
-            DontDestroyOnLoad (gameObject);
         }
 
         public async Task Init()
         {
-            if(_startButton != null)
-                _startButton.onClick.AddListener(() =>
-                {
-                    SetPanel(Panels.GAME);
-                });
-        
             if(_restartButton != null)
                 _restartButton.onClick.AddListener(() =>
                 {
-                    GameManager.instance.OnRestart?.Invoke();
+                    
                     CurrencyManager.instance.ResetScore();
                     SetPanel(Panels.GAME);
+                    GameManager.instance.RestartLevel();
                 });
         }
         
         public void SetPanel(Panels panel)
         {
-            _menuPanel.gameObject.SetActive(false);
             _gamePanel.gameObject.SetActive(false);
             _resultPanel.gameObject.SetActive(false);
 
             switch (panel)
             {
-                case Panels.MENU:
-                    _menuPanel.gameObject.SetActive(true);
-                    break;
                 case Panels.GAME:
                     _gamePanel.gameObject.SetActive(true);
                     break;
@@ -68,10 +56,14 @@ namespace Managers
             }
         }
 
+        public void ShowGame()
+        {
+            SetPanel(Panels.GAME);
+        }
+        
         public void ShowLevelResult()
         {
             _scoreText.SetText($"Your score: {CurrencyManager.instance.GetScore}");
-            _hightScoreText.SetText($"Your best score: {CurrencyManager.instance.GetMaxScore}");
         
             SetPanel(Panels.RESULT);
         }
@@ -79,7 +71,6 @@ namespace Managers
     
     public enum Panels
     {
-        MENU,
         GAME,
         RESULT
     }
