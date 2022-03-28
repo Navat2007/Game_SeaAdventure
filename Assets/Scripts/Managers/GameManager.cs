@@ -10,8 +10,8 @@ namespace Managers
         public EventHandler OnRestart;
 
         [SerializeField] private GameState currentState = GameState.PAUSE;
-        private int _score;
-        private int _highScore;
+
+        public GameState GetState => currentState;
     
         private void Awake()
         {
@@ -31,9 +31,6 @@ namespace Managers
 
         public void FinishLevel()
         {
-            if (_score > _highScore)
-                _highScore = _score;
-        
             UiManager.instance.ShowLevelResult();
         }
 

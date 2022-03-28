@@ -24,16 +24,19 @@ public class MovingBlock : MonoBehaviour
 
     private void Update()
     {
-        transform.position += Vector3.left * (Time.deltaTime * _moveSpeed);
-
-        if (transform.position.x <= -15)
+        if (GameManager.instance.GetState == GameState.PLAY)
         {
-            transform.position += Vector3.right * 30f;
+            transform.position += Vector3.left * (Time.deltaTime * _moveSpeed);
 
-            if(_randomY)
+            if (transform.position.x <= -15)
             {
-                float newY = _startingYPosition + UnityEngine.Random.Range(-1f, 1f);
-                transform.position = new Vector3(transform.position.x, newY);
+                transform.position += Vector3.right * 30f;
+
+                if(_randomY)
+                {
+                    float newY = _startingYPosition + UnityEngine.Random.Range(-1f, 1f);
+                    transform.position = new Vector3(transform.position.x, newY);
+                }
             }
         }
     }

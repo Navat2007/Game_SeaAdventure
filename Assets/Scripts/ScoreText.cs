@@ -1,3 +1,4 @@
+using System;
 using Managers;
 using TMPro;
 using UnityEngine;
@@ -9,10 +10,21 @@ public class ScoreText : MonoBehaviour
     private void Awake()
     {
         _scoreText = GetComponent<TMP_Text>();
-        CurrencyManager.instance.OnScoreChange += (s, score) => UpdateText(score);
     }
 
-    void UpdateText(float value)
+    private void OnEnable()
+    {
+        CurrencyManager.instance.OnScoreChange += UpdateText;
+
+    }
+
+    private void OnDisable()
+    {
+        CurrencyManager.instance.OnScoreChange -= UpdateText;
+
+    }
+
+    void UpdateText(object sender, float value)
     {
         _scoreText.text = $"Score: {value}";
     }
