@@ -42,7 +42,7 @@ namespace Managers
             if(_restartButton != null)
                 _restartButton.onClick.AddListener(() =>
                 {
-                    GameManager.instance.OnRestart?.Invoke(null, null);
+                    GameManager.instance.OnRestart?.Invoke();
                     CurrencyManager.instance.ResetScore();
                     SetPanel(Panels.GAME);
                 });

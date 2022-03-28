@@ -7,7 +7,8 @@ namespace Managers
     {
         public static GameManager instance;
 
-        public EventHandler OnRestart;
+        public Action OnRestart;
+        public Action<GameState> OnGameStateChange;
 
         [SerializeField] private GameState currentState = GameState.PAUSE;
 
@@ -34,6 +35,11 @@ namespace Managers
             UiManager.instance.ShowLevelResult();
         }
 
+        public void SetState(GameState state)
+        {
+            currentState = state;
+            OnGameStateChange?.Invoke(state);
+        }
     }
 }
 

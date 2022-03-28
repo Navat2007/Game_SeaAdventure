@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void OnRestart(object sender, EventArgs e)
+    private void OnRestart()
     {
         _fixedJoystick.enabled = false;
     }

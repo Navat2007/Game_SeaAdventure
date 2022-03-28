@@ -15,11 +15,16 @@ public class MovingBlock : MonoBehaviour
     {
         _startingXPosition = transform.position.x;
         _startingYPosition = transform.position.y;
+    }
+    
+    private void OnEnable()
+    {
+        GameManager.instance.OnRestart += PositionReset;
+    }
 
-        GameManager.instance.OnRestart += (sender, args) =>
-        {
-            transform.position = new Vector3(_startingXPosition, _startingYPosition);
-        };
+    private void OnDisable()
+    {
+        GameManager.instance.OnRestart -= PositionReset;
     }
 
     private void Update()
@@ -39,5 +44,10 @@ public class MovingBlock : MonoBehaviour
                 }
             }
         }
+    }
+    
+    private void PositionReset()
+    {
+        transform.position = new Vector3(_startingXPosition, _startingYPosition);
     }
 }
