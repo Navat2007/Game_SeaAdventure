@@ -16,8 +16,6 @@ namespace Managers
  
         void Awake () 
         {
-            Debug.Log("GameManager awake");
-            
             if (instance == null)
             {
                 instance = this;
