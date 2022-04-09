@@ -39,6 +39,8 @@ public class MovingBlock : MonoBehaviour
                     float newY = _startingYPosition + UnityEngine.Random.Range(-1f, 1f);
                     transform.position = new Vector3(transform.position.x, newY);
                 }
+                
+                gameObject.SetActive(false);
             }
         }
     }
@@ -46,5 +48,6 @@ public class MovingBlock : MonoBehaviour
     private void PositionReset()
     {
         transform.position = new Vector3(_startingXPosition, _startingYPosition);
+        gameObject.SetActive(false);
     }
 }

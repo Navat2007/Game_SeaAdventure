@@ -3,13 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _startingXPosition;
-    [SerializeField] private float _startingYPosition;
+    public static Player instance;
+    
+    [SerializeField] private PlayerSkin currentSkin = PlayerSkin.DOLPHIN;
+    [SerializeField] private float startingXPosition;
+    [SerializeField] private float startingYPosition;
     
     private void Awake()
     {
-        _startingXPosition = transform.position.x;
-        _startingYPosition = transform.position.y;
+        if (instance == null)
+        {
+            instance = this;
+        } 
+        else if (instance != this)
+        {
+            Destroy (gameObject);
+        }
+        
+        startingXPosition = transform.position.x;
+        startingYPosition = transform.position.y;
     }
 
     private void Start()
@@ -24,6 +36,18 @@ public class Player : MonoBehaviour
 
     private void PositionReset()
     {
-        transform.position = new Vector3(_startingXPosition, _startingYPosition);
+        transform.position = new Vector3(startingXPosition, startingYPosition);
     }
+    
+    public PlayerSkin GetCurrentSkin()
+    {
+        return currentSkin;
+    }
+}
+
+public enum PlayerSkin
+{
+    ALL,
+    DOLPHIN,
+    SUBMARINE
 }

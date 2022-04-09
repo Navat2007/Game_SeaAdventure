@@ -16,10 +16,14 @@ namespace Managers
     
         private void Awake()
         {
-            if(instance != null)
-                Destroy(gameObject);
-        
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+            } 
+            else if (instance != this)
+            {
+                Destroy (gameObject);
+            }
         }
 
         private async void Start()
