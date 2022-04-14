@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Managers;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -27,8 +24,7 @@ namespace Spawners
         
         public void Spawn()
         {
-            Debug.Log($"Try spawn chunk");
-            EnableObjectInPool(_chunkPool);
+            EnableObjectInPool(_chunkPool, GetRandomDisabledObjectInPool());
         }
         
         public void PopulatePool(ref GameObject[] pool, GameObject[] prefabs)
@@ -65,6 +61,25 @@ namespace Spawners
                     return;
                 }
             }
+        }
+        
+        private void EnableObjectInPool(GameObject[] pool, int index)
+        {
+            pool[index].SetActive(true);
+        }
+
+        private int GetRandomDisabledObjectInPool()
+        {
+            int index = -1;
+            while (index == -1)
+            {
+                var randomIndex = Random.Range(0, _chunkPool.Length);
+                if (!_chunkPool[randomIndex].activeSelf)
+                {
+                    index = randomIndex;
+                }
+            }
+            return index;
         }
     }
 }
