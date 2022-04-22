@@ -8,17 +8,20 @@ namespace Managers
     {
         public static CurrencyManager instance;
         
-        public EventHandler<float> OnScoreChange;
-        public EventHandler<float> OnMaxScoreChange;
+        public EventHandler<int> OnGoldChange;
+        public EventHandler<int> OnLevelGoldChange;
+        public EventHandler<int> OnAirChange;
+        public EventHandler<int> OnScoreChange;
+        public EventHandler<int> OnMaxScoreChange;
 
-        [SerializeField] private int coins = 0;
-        [SerializeField] private float score = 0;
-        [SerializeField] private float maxScore = 0;
+        [SerializeField] private int scoreOnGoldPickup = 50;
         
-        public int GetCoins => coins;
-        public float GetScore => score;
-        public float GetMaxScore => maxScore;
-        
+        [SerializeField] private int gold = 0;
+        [SerializeField] private int levelGold = 0;
+        [SerializeField] private int air = 100;
+        [SerializeField] private int score = 0;
+        [SerializeField] private int maxScore = 0;
+
         void Awake () 
         {
             if (instance == null)
@@ -35,25 +38,113 @@ namespace Managers
         {
             
         }
-
-        public void AddScore(float score)
+        
+        public int GetCurrency(Currency currency)
         {
-            this.score += score;
-
-            if (this.score > this.maxScore)
+            switch (currency)
             {
-                maxScore = this.score;
-                OnMaxScoreChange?.Invoke(this, this.score);
+                case Currency.GOLD:
+                    return gold;
+                case Currency.LEVEL_GOLD:
+                    return levelGold;
+                case Currency.AIR:
+                    return air;
+                case Currency.SCORE:
+                    return score;
+                case Currency.MAX_SCORE:
+                    return maxScore;
+                default:
+                    return 0;
             }
-            
-            OnScoreChange?.Invoke(this, this.score);
         }
         
-        public void ResetScore()
+        public void AddCurrency(Currency currency, int value)
         {
-            this.score = 0;
+            switch (currency)
+            {
+                case Currency.GOLD:
+                    gold += value;
+                    OnGoldChange?.Invoke(null, gold);
+                    break;
+                case Currency.LEVEL_GOLD:
+                    levelGold += value;
+                    OnLevelGoldChange?.Invoke(null, levelGold);
+                    AddCurrency(Currency.SCORE, scoreOnGoldPickup);
+                    break;
+                case Currency.AIR:
+                    air += value;
 
-            OnScoreChange?.Invoke(this, this.score);
+                    if (air > 100)
+                        air = 100;
+                    
+                    OnAirChange?.Invoke(null, air);
+                    break;
+                case Currency.SCORE:
+                    score += value;
+                    if (score > maxScore)
+                    {
+                        SetCurrency(Currency.MAX_SCORE, score);
+                    }
+                    OnScoreChange?.Invoke(null, score);
+                    break;
+                case Currency.MAX_SCORE:
+                    maxScore += value;
+                    OnMaxScoreChange?.Invoke(null, maxScore);
+                    break;
+            }
         }
+    
+        public void SetCurrency(Currency currency, int value)
+        {
+            switch (currency)
+            {
+                case Currency.GOLD:
+                    gold = value;
+                    OnGoldChange?.Invoke(null, gold);
+                    break;
+                case Currency.LEVEL_GOLD:
+                    levelGold = value;
+                    OnLevelGoldChange?.Invoke(null, levelGold);
+                    break;
+                case Currency.AIR:
+                    air = value;
+                    
+                    if (air > 100)
+                        air = 100;
+                    
+                    OnAirChange?.Invoke(null, air);
+                    break;
+                case Currency.SCORE:
+                    score = value;
+                    if (score > maxScore)
+                    {
+                        SetCurrency(Currency.MAX_SCORE, score);
+                    }
+                    OnScoreChange?.Invoke(null, score);
+                    break;
+                case Currency.MAX_SCORE:
+                    maxScore = value;
+                    OnMaxScoreChange?.Invoke(null, maxScore);
+                    break;
+            }
+        }
+        
+        public void Reset()
+        {
+            SetCurrency(Currency.GOLD, 0);
+            SetCurrency(Currency.LEVEL_GOLD, 0);
+            SetCurrency(Currency.AIR, 100);
+            SetCurrency(Currency.SCORE, 0);
+            SetCurrency(Currency.MAX_SCORE, 0);
+        }
+    }
+
+    public enum Currency
+    {
+        GOLD,
+        LEVEL_GOLD,
+        AIR,
+        SCORE,
+        MAX_SCORE
     }
 }

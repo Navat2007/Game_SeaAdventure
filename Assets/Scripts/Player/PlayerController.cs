@@ -30,8 +30,16 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.instance.GetState == GameState.PLAY)
         {
+            if (!_rigidbody2D.simulated)
+                _rigidbody2D.simulated = true;
+            
             _rigidbody2D.velocity =
                 new Vector2(_fixedJoystick.Horizontal * _moveSpeed, _fixedJoystick.Vertical * _moveSpeed);
+        }
+        else
+        {
+            if (_rigidbody2D.simulated)
+                _rigidbody2D.simulated = false;
         }
     }
 

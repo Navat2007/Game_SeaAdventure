@@ -5,7 +5,7 @@ public static class Startup
 {
     private static GameObject _root;
     
-    [RuntimeInitializeOnLoadMethod]
+    //[RuntimeInitializeOnLoadMethod]
     public static void Execute()
     {
         _root = GameObject.Find("SCRIPTS");
@@ -23,6 +23,8 @@ public static class Startup
         CreateObject<GameManager>();
         
         Debug.Log("<b>Startup</b> finished");
+        
+        GameManager.instance.StartLevel();
     }
 
     private static void CreateObject<T>() where T : MonoBehaviour

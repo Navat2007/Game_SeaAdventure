@@ -23,6 +23,11 @@ public class SettingsManager : MonoBehaviour
     {
         
     }
+    
+    public async Task Subscribe()
+    {
+        
+    }
 
     public bool GetIsReady()
     {

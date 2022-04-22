@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class ScoreOnEnter : MonoBehaviour
 {
-    [SerializeField] private float scoreToAdd = 10;
+    [SerializeField] private int scoreToAdd = 10;
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        CurrencyManager.instance.AddScore(scoreToAdd);
+        CurrencyManager.instance.AddCurrency(Currency.SCORE, scoreToAdd);
     }
 }

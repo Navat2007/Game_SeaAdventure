@@ -1,6 +1,8 @@
 using Managers;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerController))]
+[RequireComponent(typeof(PlayerAirController))]
 public class Player : MonoBehaviour
 {
     public static Player instance;

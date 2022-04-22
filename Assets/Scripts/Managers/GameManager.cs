@@ -32,6 +32,9 @@ namespace Managers
             await SettingsManager.instance.Init();
             await CurrencyManager.instance.Init();
             await UiManager.instance.Init();
+
+            await UiManager.instance.Subscribe();
+            await SettingsManager.instance.Subscribe();
         }
         
         public void StartLevel()

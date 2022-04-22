@@ -15,7 +15,6 @@ public class ScoreText : MonoBehaviour
     private void OnEnable()
     {
         CurrencyManager.instance.OnScoreChange += UpdateText;
-
     }
 
     private void OnDisable()
@@ -24,8 +23,9 @@ public class ScoreText : MonoBehaviour
 
     }
 
-    void UpdateText(object sender, float value)
+    void UpdateText(object sender, int value)
     {
-        _scoreText.text = $"Score: {value}";
+        if(_scoreText != null)
+            _scoreText.text = $"Score: {value}";
     }
 }
