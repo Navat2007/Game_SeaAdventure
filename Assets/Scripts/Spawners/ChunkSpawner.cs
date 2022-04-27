@@ -29,7 +29,7 @@ namespace Spawners
         
         public void PopulatePool(ref GameObject[] pool, GameObject[] prefabs)
         {
-            var currentPlayerSkin = Player.instance.GetCurrentSkin();
+            var currentPlayerSkin = Player.Instance.GetCurrentSkin();
             pool = new GameObject[poolSize];
 
             List<GameObject> tempPrefabs = new List<GameObject>();

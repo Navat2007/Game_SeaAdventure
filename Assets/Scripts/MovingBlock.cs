@@ -13,7 +13,7 @@ public class MovingBlock : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.OnRestart += PositionReset;
+        GameManager.Instance.OnExit += PositionReset;
         
         _startingXPosition = transform.position.x;
         _startingYPosition = transform.position.y;
@@ -21,12 +21,12 @@ public class MovingBlock : MonoBehaviour
     
     private void OnDestroy()
     {
-        GameManager.instance.OnRestart -= PositionReset;
+        GameManager.Instance.OnExit -= PositionReset;
     }
 
     private void Update()
     {
-        if (GameManager.instance.GetState == GameState.PLAY)
+        if (GameManager.Instance.GetState == GameState.PLAY)
         {
             transform.position += Vector3.left * (Time.deltaTime * _moveSpeed);
 

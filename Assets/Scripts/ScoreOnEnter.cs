@@ -10,6 +10,6 @@ public class ScoreOnEnter : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        CurrencyManager.instance.AddCurrency(Currency.SCORE, scoreToAdd);
+        CurrencyManager.Instance.AddCurrency(Currency.SCORE, scoreToAdd);
     }
 }

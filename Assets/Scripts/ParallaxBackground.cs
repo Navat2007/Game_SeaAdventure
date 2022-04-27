@@ -19,7 +19,7 @@ public class ParallaxBackground : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.GetState == GameState.PLAY)
+        if (GameManager.Instance.GetState == GameState.PLAY)
         {
             _newXPosition = Mathf.Repeat(Time.time * -_speed, _offset);
 

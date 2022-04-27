@@ -16,19 +16,19 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.OnRestart += OnRestart;
-        GameManager.instance.OnGameStateChange += OnStateChange;
+        GameManager.Instance.OnExit += OnExit;
+        GameManager.Instance.OnGameStateChange += OnStateChange;
     }
 
     private void OnDestroy()
     {
-        GameManager.instance.OnRestart -= OnRestart;
-        GameManager.instance.OnGameStateChange -= OnStateChange;
+        GameManager.Instance.OnExit -= OnExit;
+        GameManager.Instance.OnGameStateChange -= OnStateChange;
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.instance.GetState == GameState.PLAY)
+        if (GameManager.Instance.GetState == GameState.PLAY)
         {
             if (!_rigidbody2D.simulated)
                 _rigidbody2D.simulated = true;
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnRestart()
+    private void OnExit()
     {
         _fixedJoystick.Reset();
     }

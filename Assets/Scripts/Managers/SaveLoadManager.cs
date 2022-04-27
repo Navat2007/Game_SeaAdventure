@@ -5,15 +5,15 @@ namespace Managers
 {
     public class SaveLoadManager : MonoBehaviour
     {
-        public static SaveLoadManager instance;
+        public static SaveLoadManager Instance;
         
         void Awake () 
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = this;
+                Instance = this;
             } 
-            else if (instance != this)
+            else if (Instance != this)
             {
                 Destroy (gameObject);
             }

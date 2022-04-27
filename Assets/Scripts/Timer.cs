@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Managers;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
@@ -15,9 +12,19 @@ public class Timer : MonoBehaviour
     private float _scoreTimerMax = 1f;
     private float _scoreTimer = 0;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnExit += Reset;
+    }
+    
+    private void OnDisable()
+    {
+        GameManager.Instance.OnExit -= Reset;
+    }
+
     private void Update()
     {
-        if (GameManager.instance.GetState == GameState.PLAY)
+        if (GameManager.Instance.GetState == GameState.PLAY)
         {
             currentTime += Time.deltaTime;
             OnTimerChange?.Invoke(this, currentTime);
@@ -27,11 +34,11 @@ public class Timer : MonoBehaviour
             if (_scoreTimer >= _scoreTimerMax)
             {
                 _scoreTimer = 0;
-                CurrencyManager.instance.AddCurrency(Currency.SCORE, scoreOnTime);
+                CurrencyManager.Instance.AddCurrency(Currency.SCORE, scoreOnTime);
             }
         }
     }
-    
+
     public void Reset()
     {
         currentTime = 0;

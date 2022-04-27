@@ -1,36 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class SettingsManager : MonoBehaviour
+namespace Managers
 {
-    public static SettingsManager instance;
+    public class SettingsManager : MonoBehaviour
+    {
+        public static SettingsManager Instance;
  
-    void Awake () 
-    {
-        if (instance == null)
+        void Awake () 
         {
-            instance = this;
-        } 
-        else if (instance != this)
-        {
-            Destroy (gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+            } 
+            else if (Instance != this)
+            {
+                Destroy (gameObject);
+            }
         }
-    }
     
-    public async Task Init()
-    {
+        public async Task Init()
+        {
         
-    }
+        }
     
-    public async Task Subscribe()
-    {
+        public async Task Subscribe()
+        {
         
-    }
+        }
 
-    public bool GetIsReady()
-    {
-        return true;
+        public bool GetIsReady()
+        {
+            return true;
+        }
     }
 }

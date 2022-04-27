@@ -14,12 +14,12 @@ public class ScoreText : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrencyManager.instance.OnScoreChange += UpdateText;
+        CurrencyManager.Instance.OnScoreChange += UpdateText;
     }
 
     private void OnDisable()
     {
-        CurrencyManager.instance.OnScoreChange -= UpdateText;
+        CurrencyManager.Instance.OnScoreChange -= UpdateText;
 
     }
 

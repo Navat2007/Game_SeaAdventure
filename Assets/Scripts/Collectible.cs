@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Managers;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Collectible : MonoBehaviour
 {
@@ -25,10 +22,10 @@ public class Collectible : MonoBehaviour
             OnCollect?.Invoke();
             
             if(collectibleType == CollectibleType.GOLD_COIN)
-                CurrencyManager.instance.AddCurrency(Currency.LEVEL_GOLD, pointsToAdd);
+                CurrencyManager.Instance.AddCurrency(Currency.LEVEL_GOLD, pointsToAdd);
             
             if(collectibleType == CollectibleType.AIR_BUBLE)
-                CurrencyManager.instance.AddCurrency(Currency.AIR, pointsToAdd);
+                CurrencyManager.Instance.AddCurrency(Currency.AIR, pointsToAdd);
         }
     }
 }

@@ -5,9 +5,9 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager instance;
+        public static GameManager Instance;
 
-        public event Action OnRestart;
+        public event Action OnExit;
         public event Action<GameState> OnGameStateChange;
 
         [SerializeField] private GameState currentState = GameState.PAUSE;
@@ -16,11 +16,11 @@ namespace Managers
     
         private void Awake()
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = this;
+                Instance = this;
             } 
-            else if (instance != this)
+            else if (Instance != this)
             {
                 Destroy (gameObject);
             }
@@ -28,13 +28,13 @@ namespace Managers
 
         private async void Start()
         {
-            await SaveLoadManager.instance.Init();
-            await SettingsManager.instance.Init();
-            await CurrencyManager.instance.Init();
-            await UiManager.instance.Init();
+            await SaveLoadManager.Instance.Init();
+            await SettingsManager.Instance.Init();
+            await CurrencyManager.Instance.Init();
+            await UiManager.Instance.Init();
 
-            await UiManager.instance.Subscribe();
-            await SettingsManager.instance.Subscribe();
+            await UiManager.Instance.Subscribe();
+            await SettingsManager.Instance.Subscribe();
         }
         
         public void StartLevel()
@@ -47,16 +47,16 @@ namespace Managers
             SetState(GameState.PAUSE);
         }
 
-        public void RestartLevel()
+        public void ExitLevel()
         {
-            OnRestart?.Invoke();
-            StartLevel();
+            PauseLevel();
+            OnExit?.Invoke();
         }
 
         public void FinishLevel()
         {
             PauseLevel();
-            UiManager.instance.ShowLevelResult();
+            UiManager.Instance.ShowLevelResult();
         }
 
         public void SetState(GameState state)

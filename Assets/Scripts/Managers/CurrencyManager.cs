@@ -6,7 +6,7 @@ namespace Managers
 {
     public class CurrencyManager : MonoBehaviour
     {
-        public static CurrencyManager instance;
+        public static CurrencyManager Instance;
         
         public EventHandler<int> OnGoldChange;
         public EventHandler<int> OnLevelGoldChange;
@@ -14,7 +14,7 @@ namespace Managers
         public EventHandler<int> OnScoreChange;
         public EventHandler<int> OnMaxScoreChange;
 
-        [SerializeField] private int scoreOnGoldPickup = 50;
+        [SerializeField] private int scoreOnGoldPickup = 25;
         
         [SerializeField] private int gold = 0;
         [SerializeField] private int levelGold = 0;
@@ -24,11 +24,11 @@ namespace Managers
 
         void Awake () 
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = this;
+                Instance = this;
             } 
-            else if (instance != this)
+            else if (Instance != this)
             {
                 Destroy (gameObject);
             }
@@ -129,7 +129,7 @@ namespace Managers
             }
         }
         
-        public void Reset()
+        public void FullReset()
         {
             SetCurrency(Currency.GOLD, 0);
             SetCurrency(Currency.LEVEL_GOLD, 0);

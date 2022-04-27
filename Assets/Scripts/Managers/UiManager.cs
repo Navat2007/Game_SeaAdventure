@@ -8,65 +8,112 @@ namespace Managers
 {
     public class UiManager : MonoBehaviour
     {
-        public static UiManager instance;
+        public static UiManager Instance;
         
         [Header("Main")]
-        [SerializeField] private Transform uiPanel;
+        [SerializeField] private Transform mainPanel;
         [SerializeField] private Transform gamePanel;
-        [SerializeField] private Button startButton;
+        
+        [SerializeField] private Button menuStartButton;
         
         [Header("Game")]
-        [SerializeField] private Transform _gamePanel;
-        [SerializeField] private Transform _resultPanel;
+        [SerializeField] private Transform levelGamePanel;
+        [SerializeField] private Transform levelResultPanel;
+        [SerializeField] private Transform levelPausePanel;
+        [SerializeField] private Transform levelSettingPanel;
+        
         [SerializeField] private TMP_Text scoreText;
         [SerializeField] private TMP_Text goldText;
         [SerializeField] private TMP_Text levelGoldText;
         [SerializeField] private TMP_Text timeText;
         [SerializeField] private TMP_Text airText;
-        [SerializeField] private Button _restartButton;
+        
+        [SerializeField] private Button levelPauseButton;
+        [SerializeField] private Button levelPauseSettingButton;
+        [SerializeField] private Button levelPauseSettingCloseButton;
+        [SerializeField] private Button levelPauseResumeButton;
+        [SerializeField] private Button levelPauseExitButton;
         
         [SerializeField] private Timer timer;
  
         void Awake () 
         {
-            if (instance == null)
+            if (Instance is null)
             {
-                instance = this;
+                Instance = this;
             } 
-            else if (instance != this)
+            else if (Instance != this)
             {
                 Destroy (gameObject);
             }
+
+            if (mainPanel is not null && gamePanel is not null)
+            {
+                mainPanel.gameObject.SetActive(true);
+                gamePanel.gameObject.SetActive(false);
+            }
+           
         }
 
         public async Task Init()
         {
-            if(startButton != null)
-                startButton.onClick.AddListener(() =>
+            if(menuStartButton is not null)
+                menuStartButton.onClick.AddListener(() =>
                 {
-                    CurrencyManager.instance.SetCurrency(Currency.SCORE, 0);
-                    CurrencyManager.instance.SetCurrency(Currency.LEVEL_GOLD, 0);
-                    uiPanel.gameObject.SetActive(false);
+                    CurrencyManager.Instance.SetCurrency(Currency.SCORE, 0);
+                    CurrencyManager.Instance.SetCurrency(Currency.LEVEL_GOLD, 0);
+                    mainPanel.gameObject.SetActive(false);
                     gamePanel.gameObject.SetActive(true);
-                    GameManager.instance.StartLevel();
+                    GameManager.Instance.StartLevel();
                 });
             
-            if(_restartButton != null)
-                _restartButton.onClick.AddListener(() =>
+            if(levelPauseButton is not null)
+                levelPauseButton.onClick.AddListener(() =>
                 {
-                    CurrencyManager.instance.SetCurrency(Currency.SCORE, 0);
-                    CurrencyManager.instance.SetCurrency(Currency.LEVEL_GOLD, 0);
-                    SetPanel(Panels.GAME);
-                    GameManager.instance.RestartLevel();
+                    GameManager.Instance.PauseLevel();
+                    levelPausePanel.gameObject.SetActive(true);
+                });
+            
+            if(levelPauseSettingButton is not null)
+                levelPauseSettingButton.onClick.AddListener(() =>
+                {
+                    levelSettingPanel.gameObject.SetActive(true);
+                });
+            
+            if(levelPauseSettingCloseButton is not null)
+                levelPauseSettingCloseButton.onClick.AddListener(() =>
+                {
+                    levelSettingPanel.gameObject.SetActive(false);
+                });
+            
+            if(levelPauseResumeButton is not null)
+                levelPauseResumeButton.onClick.AddListener(() =>
+                {
+                    levelPausePanel.gameObject.SetActive(false);
+                    GameManager.Instance.StartLevel();
+                });
+            
+            if(levelPauseExitButton is not null)
+                levelPauseExitButton.onClick.AddListener(() =>
+                {
+                    GameManager.Instance.ExitLevel();
+                    
+                    CurrencyManager.Instance.SetCurrency(Currency.SCORE, 0);
+                    CurrencyManager.Instance.SetCurrency(Currency.LEVEL_GOLD, 0);
+                    
+                    levelPausePanel.gameObject.SetActive(false);
+                    levelResultPanel.gameObject.SetActive(false);
+                    gamePanel.gameObject.SetActive(false);
+                    mainPanel.gameObject.SetActive(true);
                 });
         }
         
         public async Task Subscribe()
         {
-            CurrencyManager.instance.OnGoldChange += (sender, d) => UpdateCurrency(sender, d, Currency.GOLD);
-            CurrencyManager.instance.OnLevelGoldChange += (sender, d) => UpdateCurrency(sender, d, Currency.LEVEL_GOLD);
-            CurrencyManager.instance.OnAirChange += (sender, d) => UpdateCurrency(sender, d, Currency.AIR);
-            CurrencyManager.instance.OnScoreChange += (sender, d) => UpdateCurrency(sender, d, Currency.SCORE);
+            CurrencyManager.Instance.OnGoldChange += (sender, d) => UpdateCurrency(sender, d, Currency.GOLD);
+            CurrencyManager.Instance.OnLevelGoldChange += (sender, d) => UpdateCurrency(sender, d, Currency.LEVEL_GOLD);
+            CurrencyManager.Instance.OnAirChange += (sender, d) => UpdateCurrency(sender, d, Currency.AIR);
+            CurrencyManager.Instance.OnScoreChange += (sender, d) => UpdateCurrency(sender, d, Currency.SCORE);
 
             if (timer != null && timeText != null)
             {
@@ -80,16 +127,16 @@ namespace Managers
         
         public void SetPanel(Panels panel)
         {
-            _gamePanel.gameObject.SetActive(false);
-            _resultPanel.gameObject.SetActive(false);
+            levelGamePanel.gameObject.SetActive(false);
+            levelResultPanel.gameObject.SetActive(false);
 
             switch (panel)
             {
                 case Panels.GAME:
-                    _gamePanel.gameObject.SetActive(true);
+                    levelGamePanel.gameObject.SetActive(true);
                     break;
                 case Panels.RESULT:
-                    _resultPanel.gameObject.SetActive(true);
+                    levelResultPanel.gameObject.SetActive(true);
                     break;
             }
         }

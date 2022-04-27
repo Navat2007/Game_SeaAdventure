@@ -10,9 +10,21 @@ public class PlayerAirController : MonoBehaviour
     [SerializeField] private float timeBetweenDrain = 1f;
     [SerializeField] private int drainAmount = 1;
 
-    private void Start()
+    private void OnEnable()
     {
+        GameManager.Instance.OnExit += Reset;
         StartCoroutine(AirTick());
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnExit -= Reset;
+        StopCoroutine(AirTick());
+    }
+
+    void Reset()
+    {
+        CurrencyManager.Instance.SetCurrency(Currency.AIR, Player.Instance.GetMaxAirLevel());
     }
 
     IEnumerator AirTick()
@@ -21,9 +33,9 @@ public class PlayerAirController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeBetweenDrain);
 
-            if (GameManager.instance.GetState == GameState.PLAY)
+            if (GameManager.Instance.GetState == GameState.PLAY)
             {
-                CurrencyManager.instance.AddCurrency(Currency.AIR, -drainAmount);
+                CurrencyManager.Instance.AddCurrency(Currency.AIR, -drainAmount);
             }
         }
     }

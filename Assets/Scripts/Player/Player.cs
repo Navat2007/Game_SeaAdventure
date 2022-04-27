@@ -5,19 +5,20 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAirController))]
 public class Player : MonoBehaviour
 {
-    public static Player instance;
+    public static Player Instance;
     
     [SerializeField] private PlayerSkin currentSkin = PlayerSkin.DOLPHIN;
     [SerializeField] private float startingXPosition;
     [SerializeField] private float startingYPosition;
+    [SerializeField] private int airLevel = 100;
     
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         } 
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy (gameObject);
         }
@@ -26,14 +27,14 @@ public class Player : MonoBehaviour
         startingYPosition = transform.position.y;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        GameManager.instance.OnRestart += PositionReset;
+        GameManager.Instance.OnExit += PositionReset;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        GameManager.instance.OnRestart -= PositionReset;
+        GameManager.Instance.OnExit -= PositionReset;
     }
 
     private void PositionReset()
@@ -44,6 +45,11 @@ public class Player : MonoBehaviour
     public PlayerSkin GetCurrentSkin()
     {
         return currentSkin;
+    }
+
+    public int GetMaxAirLevel()
+    {
+        return airLevel;
     }
 }
 
