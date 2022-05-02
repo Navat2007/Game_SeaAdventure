@@ -8,7 +8,7 @@ public class KillOnTouch : MonoBehaviour
     {
         if (other.collider.CompareTag("Player"))
         {
-            GameManager.Instance.FinishLevel();
+            GameManager.LevelManager.FinishLevel();
         }
     }
 }

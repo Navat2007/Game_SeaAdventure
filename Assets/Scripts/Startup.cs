@@ -24,7 +24,7 @@ public static class Startup
         
         Debug.Log("<b>Startup</b> finished");
         
-        GameManager.Instance.StartLevel();
+        //GameManager.Instance.StartLevel();
     }
 
     private static void CreateObject<T>() where T : MonoBehaviour

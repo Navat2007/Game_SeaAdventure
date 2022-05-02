@@ -7,12 +7,14 @@ namespace Managers
     {
         public static GameManager Instance;
 
-        public event Action OnExit;
-        public event Action<GameState> OnGameStateChange;
+        public static PlayerManager PlayerManager;
+        public static LevelManager LevelManager;
 
-        [SerializeField] private GameState currentState = GameState.MENU;
+        public static event Action<GameState> OnGameStateChange;
 
-        public GameState GetState => currentState;
+        private static GameState _currentState = GameState.MENU;
+
+        public GameState GetState => _currentState;
     
         private void Awake()
         {
@@ -36,33 +38,11 @@ namespace Managers
             await UiManager.Instance.Subscribe();
             await SettingsManager.Instance.Subscribe();
         }
-        
-        public void StartLevel()
-        {
-            SetState(GameState.PLAY);
-        }
-        
-        public void PauseLevel()
-        {
-            SetState(GameState.PAUSE);
-        }
 
-        public void ExitLevel()
+        public static void SetState(GameState state)
         {
-            PauseLevel();
-            OnExit?.Invoke();
-        }
-
-        public void FinishLevel()
-        {
-            PauseLevel();
-            UiManager.Instance.ShowLevelResult();
-        }
-
-        public void SetState(GameState state)
-        {
-            currentState = state;
-            OnGameStateChange?.Invoke(currentState);
+            _currentState = state;
+            OnGameStateChange?.Invoke(_currentState);
         }
     }
 }

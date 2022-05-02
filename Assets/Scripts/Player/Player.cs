@@ -6,8 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
-    
-    [SerializeField] private PlayerSkin currentSkin = PlayerSkin.DOLPHIN;
+
     [SerializeField] private float startingXPosition;
     [SerializeField] private float startingYPosition;
     [SerializeField] private int airLevel = 100;
@@ -29,12 +28,12 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnExit += PositionReset;
+        GameManager.LevelManager.OnExit += PositionReset;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnExit -= PositionReset;
+        GameManager.LevelManager.OnExit -= PositionReset;
     }
 
     private void PositionReset()
@@ -42,20 +41,10 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(startingXPosition, startingYPosition);
     }
     
-    public PlayerSkin GetCurrentSkin()
-    {
-        return currentSkin;
-    }
+    
 
     public int GetMaxAirLevel()
     {
         return airLevel;
     }
-}
-
-public enum PlayerSkin
-{
-    ALL,
-    DOLPHIN,
-    SUBMARINE
 }

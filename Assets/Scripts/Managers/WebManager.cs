@@ -97,8 +97,8 @@ namespace Managers
                 }
 
                 byte[] results = webRequest.downloadHandler.data;
-                CreateFile(Application.streamingAssetsPath + "/MP4/test.mp4", results, webRequest.downloadHandler.data.Length); 
-                AssetDatabase.Refresh(); 
+                //CreateFile(Application.streamingAssetsPath + "/MP4/test.mp4", results, webRequest.downloadHandler.data.Length); 
+                //AssetDatabase.Refresh(); 
             }
         }
         

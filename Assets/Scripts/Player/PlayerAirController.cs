@@ -12,13 +12,13 @@ public class PlayerAirController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnExit += Reset;
+        GameManager.LevelManager.OnExit += Reset;
         StartCoroutine(AirTick());
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnExit -= Reset;
+        GameManager.LevelManager.OnExit -= Reset;
         StopCoroutine(AirTick());
     }
 

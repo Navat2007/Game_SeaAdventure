@@ -13,7 +13,7 @@ public class MovingBlock : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnExit += PositionReset;
+        GameManager.LevelManager.OnExit += PositionReset;
         
         _startingXPosition = transform.position.x;
         _startingYPosition = transform.position.y;
@@ -21,7 +21,7 @@ public class MovingBlock : MonoBehaviour
     
     private void OnDestroy()
     {
-        GameManager.Instance.OnExit -= PositionReset;
+        GameManager.LevelManager.OnExit -= PositionReset;
     }
 
     private void Update()

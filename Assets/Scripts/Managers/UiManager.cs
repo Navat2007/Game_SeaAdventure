@@ -9,42 +9,50 @@ namespace Managers
     public class UiManager : MonoBehaviour
     {
         public static UiManager Instance;
-        
-        [Header("Main")]
-        [SerializeField] private Transform mainPanel;
+
+        [SerializeField] private Timer timer;
+
+        [Header("Main")] [SerializeField] private Transform mainPanel;
         [SerializeField] private Transform gamePanel;
-        
-        [SerializeField] private Button menuStartButton;
-        
-        [Header("Game")]
-        [SerializeField] private Transform levelGamePanel;
-        [SerializeField] private Transform levelResultPanel;
-        [SerializeField] private Transform levelPausePanel;
-        [SerializeField] private Transform levelSettingPanel;
-        
-        [SerializeField] private TMP_Text scoreText;
         [SerializeField] private TMP_Text goldText;
+        [SerializeField] private Button menuStartButton;
+
+        [Header("Level")] [SerializeField] private Transform levelGamePanel;
+        [SerializeField] private TMP_Text levelScoreText;
         [SerializeField] private TMP_Text levelGoldText;
-        [SerializeField] private TMP_Text timeText;
-        [SerializeField] private TMP_Text airText;
-        
+        [SerializeField] private TMP_Text levelTimeText;
+        [SerializeField] private TMP_Text levelAirText;
         [SerializeField] private Button levelPauseButton;
+
+        [Header("Level Pause")] [SerializeField]
+        private Transform levelPausePanel;
+
         [SerializeField] private Button levelPauseSettingButton;
-        [SerializeField] private Button levelPauseSettingCloseButton;
         [SerializeField] private Button levelPauseResumeButton;
         [SerializeField] private Button levelPauseExitButton;
-        
-        [SerializeField] private Timer timer;
- 
-        void Awake () 
+
+        [Header("Level Settings")] [SerializeField]
+        private Transform levelSettingPanel;
+
+        [SerializeField] private Button levelPauseSettingCloseButton;
+
+        [Header("Level Result")] [SerializeField]
+        private Transform levelResultPanel;
+
+        [SerializeField] private TMP_Text levelResultScoreText;
+        [SerializeField] private TMP_Text levelResultGoldText;
+        [SerializeField] private Button levelResultClaimButton;
+        [SerializeField] private Button levelResultClaimX2Button;
+
+        void Awake()
         {
             if (Instance is null)
             {
                 Instance = this;
-            } 
+            }
             else if (Instance != this)
             {
-                Destroy (gameObject);
+                Destroy(gameObject);
             }
 
             if (mainPanel is not null && gamePanel is not null)
@@ -52,62 +60,85 @@ namespace Managers
                 mainPanel.gameObject.SetActive(true);
                 gamePanel.gameObject.SetActive(false);
             }
-           
         }
 
         public async Task Init()
         {
-            if(menuStartButton is not null)
+            #region [MAIN SCREEN]
+
+            if (menuStartButton is not null)
                 menuStartButton.onClick.AddListener(() =>
                 {
                     CurrencyManager.Instance.SetCurrency(Currency.SCORE, 0);
                     CurrencyManager.Instance.SetCurrency(Currency.LEVEL_GOLD, 0);
                     mainPanel.gameObject.SetActive(false);
                     gamePanel.gameObject.SetActive(true);
-                    GameManager.Instance.StartLevel();
+                    GameManager.LevelManager.StartLevel();
                 });
-            
-            if(levelPauseButton is not null)
+
+            #endregion
+
+            #region [GAME SCREEN]
+
+            #region LEVEL
+
+            if (levelPauseButton is not null)
                 levelPauseButton.onClick.AddListener(() =>
                 {
-                    GameManager.Instance.PauseLevel();
+                    GameManager.LevelManager.PauseLevel();
                     levelPausePanel.gameObject.SetActive(true);
                 });
+
+            #endregion
+
+            #region LEVEL PAUSE
+
+            if (levelPauseSettingButton is not null)
+                levelPauseSettingButton.onClick.AddListener(() => { levelSettingPanel.gameObject.SetActive(true); });
             
-            if(levelPauseSettingButton is not null)
-                levelPauseSettingButton.onClick.AddListener(() =>
+            if (levelPauseResumeButton is not null)
+                levelPauseResumeButton.onClick.AddListener(() =>
                 {
-                    levelSettingPanel.gameObject.SetActive(true);
+                    levelPausePanel.gameObject.SetActive(false);
+                    GameManager.LevelManager.StartLevel();
                 });
             
-            if(levelPauseSettingCloseButton is not null)
+            if (levelPauseExitButton is not null)
+                levelPauseExitButton.onClick.AddListener(ShowLevelResult);
+
+            #endregion
+
+            #region LEVEL SETTINGS
+
+            if (levelPauseSettingCloseButton is not null)
                 levelPauseSettingCloseButton.onClick.AddListener(() =>
                 {
                     levelSettingPanel.gameObject.SetActive(false);
                 });
-            
-            if(levelPauseResumeButton is not null)
-                levelPauseResumeButton.onClick.AddListener(() =>
+
+            #endregion
+
+            #region LEVEL RESULT
+
+            if (levelResultClaimButton is not null)
+                levelResultClaimButton.onClick.AddListener(() =>
                 {
-                    levelPausePanel.gameObject.SetActive(false);
-                    GameManager.Instance.StartLevel();
+                    GameManager.LevelManager.ExitLevel();
                 });
             
-            if(levelPauseExitButton is not null)
-                levelPauseExitButton.onClick.AddListener(() =>
+            if (levelResultClaimX2Button is not null)
+                levelResultClaimX2Button.onClick.AddListener(() =>
                 {
-                    GameManager.Instance.ExitLevel();
-                    
-                    CurrencyManager.Instance.SetCurrency(Currency.SCORE, 0);
-                    CurrencyManager.Instance.SetCurrency(Currency.LEVEL_GOLD, 0);
-                    
-                    levelPausePanel.gameObject.SetActive(false);
-                    levelResultPanel.gameObject.SetActive(false);
-                    gamePanel.gameObject.SetActive(false);
-                    mainPanel.gameObject.SetActive(true);
+                    CurrencyManager.Instance.AddCurrency(Currency.GOLD, CurrencyManager.Instance.GetCurrency(Currency.LEVEL_GOLD));
+                    GameManager.LevelManager.ExitLevel();
                 });
+
+
+            #endregion
+
+            #endregion
         }
-        
+
         public async Task Subscribe()
         {
             CurrencyManager.Instance.OnGoldChange += (sender, d) => UpdateCurrency(sender, d, Currency.GOLD);
@@ -115,16 +146,16 @@ namespace Managers
             CurrencyManager.Instance.OnAirChange += (sender, d) => UpdateCurrency(sender, d, Currency.AIR);
             CurrencyManager.Instance.OnScoreChange += (sender, d) => UpdateCurrency(sender, d, Currency.SCORE);
 
-            if (timer != null && timeText != null)
+            if (timer != null && levelTimeText != null)
             {
                 timer.OnTimerChange += (sender, time) =>
                 {
                     TimeSpan timeSpan = TimeSpan.FromSeconds(time);
-                    timeText.text = $"Time: {timeSpan:m\\:ss}";
+                    levelTimeText.text = $"Time: {timeSpan:m\\:ss}";
                 };
             }
         }
-        
+
         public void SetPanel(Panels panel)
         {
             levelGamePanel.gameObject.SetActive(false);
@@ -140,43 +171,53 @@ namespace Managers
                     break;
             }
         }
-        
+
         void UpdateCurrency(object obj, int value, Currency currency)
         {
             switch (currency)
             {
                 case Currency.GOLD:
                     if (goldText != null)
-                        goldText.text = $"Gold: {value}";
+                        goldText.text = $"{value}";
                     break;
                 case Currency.LEVEL_GOLD:
                     if (levelGoldText != null)
                         levelGoldText.text = $"Gold: {value}";
+                    
+                    if (levelResultGoldText != null)
+                        levelResultGoldText.text = $"+ {value}";
                     break;
                 case Currency.AIR:
-                    if (airText != null)
-                        airText.text = $"Air: {value}";
+                    if (levelAirText != null)
+                        levelAirText.text = $"Air: {value}";
                     break;
                 case Currency.SCORE:
-                    if (scoreText != null)
-                        scoreText.text = $"Score: {value}";
+                    if (levelScoreText != null)
+                        levelScoreText.text = $"Score: {value}";
+                    
+                    if (levelResultScoreText != null)
+                        levelResultScoreText.text = $"{value}";
                     break;
             }
         }
 
-        public void ShowGame()
-        {
-            SetPanel(Panels.GAME);
-        }
-        
         public void ShowLevelResult()
         {
-            //scoreText.SetText($"Your score: {CurrencyManager.instance.GetCurrency(Currency.SCORE)}");
-        
             SetPanel(Panels.RESULT);
         }
+
+        public void ShowMainScreen()
+        {
+            levelPausePanel.gameObject.SetActive(false);
+            levelResultPanel.gameObject.SetActive(false);
+            levelSettingPanel.gameObject.SetActive(false);
+            levelGamePanel.gameObject.SetActive(true);
+            
+            gamePanel.gameObject.SetActive(false);
+            mainPanel.gameObject.SetActive(true);
+        }
     }
-    
+
     public enum Panels
     {
         GAME,

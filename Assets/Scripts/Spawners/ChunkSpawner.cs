@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,16 +11,22 @@ namespace Spawners
         [SerializeField][Range(0, 50)] private int poolSize = 20;
         [SerializeField] private GameObject[] chunkPrefabs;
         
-        private GameObject[] _chunkPool;
+        private List<GameObject> _chunkPool = new List<GameObject>();
 
-        private void Awake()
+        private void OnEnable()
         {
+            if (GameManager.LevelManager.GetNeedRefillChunks)
+            {
+                _chunkPool.Clear();
+                
+                foreach (var chunk in _chunkPool)
+                {
+                    Destroy(chunk.gameObject);
+                }
+                
+                PopulatePool(_chunkPool, chunkPrefabs);
+            }
             
-        }
-
-        private void Start()
-        {
-            PopulatePool(ref _chunkPool, chunkPrefabs);
             Spawn();
         }
         
@@ -27,10 +35,9 @@ namespace Spawners
             EnableObjectInPool(_chunkPool, GetRandomDisabledObjectInPool());
         }
         
-        public void PopulatePool(ref GameObject[] pool, GameObject[] prefabs)
+        public void PopulatePool(List<GameObject> pool, GameObject[] prefabs)
         {
-            var currentPlayerSkin = Player.Instance.GetCurrentSkin();
-            pool = new GameObject[poolSize];
+            var currentPlayerSkin = GameManager.PlayerManager.GetCurrentSkin();
 
             List<GameObject> tempPrefabs = new List<GameObject>();
 
@@ -46,10 +53,11 @@ namespace Spawners
             for (int i = 0; i < poolSize; i++)
             {
                 var prefab = tempPrefabs[Random.Range(0, tempPrefabs.Count)];
-                pool[i] = Instantiate(prefab, transform);
-                pool[i].SetActive(false);
-                pool[i].GetComponent<Chunk>().SetChunkSpawner(this);
-                pool[i].GetComponent<Chunk>().SetChildren();
+                var chunkGameObject = Instantiate(prefab, transform);
+                chunkGameObject.SetActive(false);
+                chunkGameObject.GetComponent<Chunk>().SetChunkSpawner(this);
+                chunkGameObject.GetComponent<Chunk>().SetChildren();
+                pool.Add(chunkGameObject);
             }
         }
         
@@ -65,7 +73,7 @@ namespace Spawners
             }
         }
         
-        private void EnableObjectInPool(GameObject[] pool, int index)
+        private void EnableObjectInPool(List<GameObject> pool, int index)
         {
             pool[index].SetActive(true);
         }
@@ -75,7 +83,7 @@ namespace Spawners
             int index = -1;
             while (index == -1)
             {
-                var randomIndex = Random.Range(0, _chunkPool.Length);
+                var randomIndex = Random.Range(0, _chunkPool.Count);
                 if (!_chunkPool[randomIndex].activeSelf)
                 {
                     index = randomIndex;

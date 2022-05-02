@@ -16,14 +16,14 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnExit += OnExit;
-        GameManager.Instance.OnGameStateChange += OnStateChange;
+        GameManager.LevelManager.OnExit += OnExit;
+        GameManager.OnGameStateChange += OnStateChange;
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnExit -= OnExit;
-        GameManager.Instance.OnGameStateChange -= OnStateChange;
+        GameManager.LevelManager.OnExit -= OnExit;
+        GameManager.OnGameStateChange -= OnStateChange;
     }
 
     private void FixedUpdate()

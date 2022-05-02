@@ -15,12 +15,27 @@ public class Chunk : MonoBehaviour
     private ChunkSpawner _chunkSpawner;
     private List<GameObject> _children = new List<GameObject>();
 
+    private void OnEnable()
+    {
+        GameManager.LevelManager.OnExit += OnGameExit;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.LevelManager.OnExit -= OnGameExit;
+    }
+
     private void Update()
     {
         if (GameManager.Instance.GetState == GameState.PLAY)
         {
             transform.position += Vector3.left * (Time.deltaTime * moveSpeed);
         }
+    }
+    
+    private void OnGameExit()
+    {
+        Reset();
     }
 
     public PlayerSkin GetChunkSkin()
