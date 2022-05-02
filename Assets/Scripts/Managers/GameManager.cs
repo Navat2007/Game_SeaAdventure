@@ -10,7 +10,7 @@ namespace Managers
         public event Action OnExit;
         public event Action<GameState> OnGameStateChange;
 
-        [SerializeField] private GameState currentState = GameState.PAUSE;
+        [SerializeField] private GameState currentState = GameState.MENU;
 
         public GameState GetState => currentState;
     
@@ -69,6 +69,7 @@ namespace Managers
 
 public enum GameState
 {
+    MENU,
     PLAY,
     PAUSE
 }

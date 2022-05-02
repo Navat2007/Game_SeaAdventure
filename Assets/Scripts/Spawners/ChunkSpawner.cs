@@ -48,6 +48,8 @@ namespace Spawners
                 var prefab = tempPrefabs[Random.Range(0, tempPrefabs.Count)];
                 pool[i] = Instantiate(prefab, transform);
                 pool[i].SetActive(false);
+                pool[i].GetComponent<Chunk>().SetChunkSpawner(this);
+                pool[i].GetComponent<Chunk>().SetChildren();
             }
         }
         
